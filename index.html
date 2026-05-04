@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5th Monthsary Surprise! 💕</title>
+    <style>
+        .game-container.hidden {
+    display: none !important;
+}
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            height: 100vh;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .game-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .title {
+            font-size: 3rem;
+            color: #fff;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            margin-bottom: 2rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .instruction {
+            font-size: 1.5rem;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 3rem;
+            max-width: 80%;
+        }
+
+        .button {
+            position: absolute;
+            padding: 20px 40px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            transform: scale(1);
+        }
+
+        .button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .button:active {
+            transform: scale(0.95);
+        }
+
+        .jumpscare {
+            position: fixed;
+            top: 5%;
+            left: 5%;
+            width: 90%;
+            height: 90%;
+            background-size: cover;
+            background-position: center;
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 20px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+        }
+
+        .jumpscare.show {
+            opacity: 1;
+        }
+
+            .celebration {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-image: url('bg.jpg');  /* 👈 YOUR IMAGE HERE */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 3rem;
+    border-radius: 30px;
+    max-width: 90%;
+    max-height: 90%;
+    overflow-y: auto;
+    z-index: 3000;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    
+    /* 👇 NEW: Overlay for text readability */
+    position: relative;
+}
+
+.celebration::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.4);  /* Dark overlay */
+    border-radius: 30px;
+    z-index: -1;
+}
+
+        .celebration.show {
+            opacity: 1;
+        }
+
+        .affirmation {
+    font-size: 1.4rem;
+    line-height: 1.8;
+    color: #fff;  /* 👈 Changed from #333 to white */
+    margin-bottom: 2rem;
+    text-align: left;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);  /* 👈 Added shadow */
+}
+
+        .music-player {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            color: white;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .music-player.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .music-image {
+            width: 100%;
+            height: 250px;
+            background: #ddd;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            /* REPLACE WITH YOUR IMAGE */
+            background-image: url('Pic1.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .music-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .music-info p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 3px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: #fff;
+            width: 40%;
+            border-radius: 3px;
+            transition: width 0.1s ease;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .control-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .control-btn:hover {
+            background: rgba(255,255,255,0.4);
+            transform: scale(1.1);
+        }
+
+        .play-pause {
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+            background: rgba(255,255,255,0.3);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 768px) {
+            .title { font-size: 2rem; }
+            .instruction { font-size: 1.2rem; }
+            .button { 
+                padding: 15px 30px; 
+                font-size: 1.4rem;
+            }
+
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container" id="gameContainer">
+        <h1 class="title">🎉 HAPPY 5th MONTHSARY BABYY 🎉</h1>
+        <p class="instruction" id="instruction">
+            Press the 5 silly buttons scattered around! 
+            <br>Each one unlocks something special... 😈
+        </p>
+    </div>
+
+
+    <!-- Buttons (only one visible at a time) -->
+    <button class="button hidden" id="btn1">Open na po oh 🥳</button>
+    <button class="button hidden" id="btn2">Jokeee 😜</button>
+    <button class="button hidden" id="btn3">Totoo na 🤪</button>
+    <button class="button hidden" id="btn4">Final na 🎊</button>
+    <button class="button hidden" id="btn5">I LOVE YOU BABY 💖</button>
+
+    <!-- Jumpscare Images (replace src with your images) -->
+    <div class="jumpscare hidden" id="img1" style="background-image: url('Pic1.jpg');"></div>
+    <div class="jumpscare hidden" id="img2" style="background-image: url('Pic2.png');"></div>
+    <div class="jumpscare hidden" id="img3" style="background-image: url('Pic3.png');"></div>
+    <div class="jumpscare hidden" id="img4" style="background-image: url('Pic4.png');"></div>
+
+    <!-- Celebration Screen -->
+    <div class="celebration hidden" id="celebration">
+        <div class="affirmation">
+
+            HAPPY 5TH MONTHSARY PO BABY KOUHHHHHHHH!!! 💕<br></br>
+
+            5 months na po us MWEHHEHHEHEHHHEH, akalain mo yun, 5 months na agad us? Bilis ng panahon nouh hihih. 
+            Thank you very much po baby ko at lagi kang nandyan for me, every paggising ko, ikaw agad nasa isip ko, 
+            update muna before kumain, update before gawin utos, update kada ganito hihih, ganon ka po ka-important for me.<br></br>
+
+            Sa loob ng 5 months na yun, you are not JUST my girlfriend, you also became my bestfriend, my kakampi, my ka-chismisan, my everything.
+            You are also my favorite person na pagkwentuhan ng mga nangyayari sa buhay ko kahit mga walang kwenta o mga kalokohan ko lang nasasabi ko.
+            I wish the time would speed-up when we're not beside each other, but Everytime I'm with you—I wish the time wouldn't just slow down but freeze, just to be with you forever.<br></br>
+
+            Your hugs, your kisses, seeing your smile, eyes, you, just makes every anger, problems, and scars inside me vanish instantly. 
+            Not only that, but it also makes everything better, my mood enhances the moment I see you, and that makes me the 
+            luckiest boyfriend alive.<br></br>
+
+            Sorry if this is the only gift I can give for this month, wala talaga akong  mahanap na source of income this vacation, and nag-advanced study naman
+            ako so I thought why not use this skill instead of doing nothing diba po hihih.<br></br>
+
+            Thank you so much, baby! Thank you for loving me even if I make you disappointed with my actions too often hihih.
+             Thank you for laughing at my corny jokes, chaos I do everytime we're together or even when we're at call.
+             I hope I make-up for everything bad I did to you and to our relationship, I hope my words and actions are enough to make you happy through every day we live.
+             I hope the corny stories I read before sleeping makes you sleep better. Even if so, I'll still do my best to improve for our future together, I LOVE YOU SO MUCH 
+             MORE THAN WORDS CAN SAY, BABYYYYYY!!! 🥰
+        </div>
+
+        <div class="music-player" id="musicPlayer">
+    <div class="music-image" id="musicImage"></div>
+    <div class="music-info">
+        <h3 id="musicTitle">Song Title</h3>
+        <p id="musicAuthor">Artist Name</p>
+    </div>
+    <div class="progress-bar">
+        <div class="progress" id="progress"></div>
+    </div>
+    <div class="controls">
+        <button class="control-btn" id="prevBtn">⏮</button>
+        <button class="control-btn play-pause" id="playPauseBtn">▶</button>
+        <button class="control-btn" id="nextBtn">⏭</button>
+    </div>
+</div>
+
+<!-- 🎵 HIDDEN AUDIO PLAYERS (5 songs) -->
+<audio id="audio1" preload="auto">
+    <source src="Libu-Libong Buwan (Uuwian) - Kyle Raphael (Lyric Video).mp3" type="audio/mpeg">
+</audio>
+<audio id="audio2" preload="auto">
+    <source src="Vietsub _ Sanctuary - Joji _ Lyrics Video.mp3" type="audio/mpeg">
+</audio>
+<audio id="audio3" preload="auto">
+    <source src="Take All the Love - Arthur Nery (Lyrics_Letra).mp3" type="audio/mpeg">
+</audio>
+<audio id="audio4" preload="auto">
+    <source src="The Art of Chasing You (feat. Ade Paloh).mp3" type="audio/mpeg">
+</audio>
+<audio id="audio5" preload="auto">
+    <source src="Dito Sa’kin - Earl Agustin (Official Lyric Video).mp3" type="audio/mpeg">
+</audio>
+
+    <script>
+    class MonthsaryGame {
+    constructor() {
+        this.currentButton = 1;
+        this.buttons = ['btn1', 'btn2', 'btn3', 'btn4', 'btn5'];
+        this.images = ['img1', 'img2', 'img3', 'img4'];
+        
+        // 🎵 ENHANCED MUSIC PLAYER SETUP
+        this.currentSong = 1;
+        this.isPlaying = false;
+        this.audioPlayers = ['audio1', 'audio2', 'audio3', 'audio4', 'audio5'];
+        this.songs = {
+            1: { title: 'Uuwian', artist: 'Kyle Raphael', image: 'Kanta1.jpg' },
+            2: { title: 'Sanctuary', artist: 'Joji', image: 'Kanta2.jpg' },
+            3: { title: 'Take All the love', artist: 'Arthur Nery', image: 'Kanta3.jpg' },
+            4: { title: 'The Art of Chasing you', artist: 'Magnolia Celebration', image: 'Kanta4.jpg' },
+            5: { title: 'Dito Sakin', artist: 'Earl Agustin', image: 'Kanta5.jpg' }
+        };
+        
+        // 🎛️ NEW: Playlist & Playback Controls
+        this.repeatMode = 'off';     // 'off', 'repeat-all', 'repeat-one'
+        this.shuffle = false;
+        this.playlist = [1,2,3,4,5]; // Song order
+        this.playlistIndex = 0;
+        
+        this.init();
+    }
+
+    init() {
+        this.showNextButton();
+        this.bindEvents();
+        this.updateSongDisplay();
+        this.updateControlsDisplay(); // New: Show repeat/shuffle status
+        document.getElementById('playPauseBtn').textContent = '⏸';
+    }
+
+    bindEvents() {
+        // Game buttons (unchanged)
+        document.querySelectorAll('.button').forEach((btn, index) => {
+            btn.addEventListener('click', () => this.handleButtonClick(index + 1));
+        });
+
+        // 🎵 MUSIC CONTROLS
+        document.getElementById('playPauseBtn').addEventListener('click', () => this.togglePlay());
+        document.getElementById('prevBtn').addEventListener('click', () => this.prevSong());
+        document.getElementById('nextBtn').addEventListener('click', () => this.nextSong());
+        
+        // 🎛️ NEW: Repeat & Shuffle buttons (add these to HTML)
+        document.getElementById('repeatBtn')?.addEventListener('click', () => this.toggleRepeat());
+        document.getElementById('shuffleBtn')?.addEventListener('click', () => this.toggleShuffle());
+    }
+
+    // 🎮 GAME FUNCTIONS (unchanged)
+    showNextButton() {
+        document.querySelectorAll('.button').forEach(btn => btn.classList.add('hidden'));
+        
+        if (this.currentButton <= 5) {
+            const btn = document.getElementById(this.buttons[this.currentButton - 1]);
+            const maxX = window.innerWidth - 200;
+            const maxY = window.innerHeight - 150;
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+            
+            btn.style.left = randomX + 'px';
+            btn.style.top = randomY + 'px';
+            btn.classList.remove('hidden');
+            
+            document.getElementById('instruction').textContent = `Find Button ${this.currentButton}/5! 👀`;
+        }
+    }
+
+    handleButtonClick(buttonNum) {
+        if (buttonNum === this.currentButton) {
+            const btn = document.getElementById(this.buttons[buttonNum - 1]);
+            btn.classList.add('hidden');
+            
+            if (this.currentButton <= 4) {
+                this.showJumpscare(this.images[buttonNum - 1]);
+            } else {
+                document.getElementById('gameContainer').classList.add('hidden');
+                document.getElementById('celebration').classList.remove('hidden');
+                document.getElementById('celebration').classList.add('show');
+                document.getElementById('musicPlayer').classList.add('show');
+                
+                setTimeout(() => {
+                    this.togglePlay();
+                }, 800);
+            }
+            this.currentButton++;
+        }
+    }
+
+    showJumpscare(imgId) {
+        const img = document.getElementById(imgId);
+        img.classList.remove('hidden');
+        img.classList.add('show');
+        
+        setTimeout(() => {
+            img.classList.remove('show');
+            setTimeout(() => {
+                img.classList.add('hidden');
+                this.showNextButton();
+            }, 300);
+        }, 3000);
+    }
+
+    // 🎵 ENHANCED MUSIC FUNCTIONS
+    updateSongDisplay() {
+        const song = this.songs[this.currentSong];
+        document.getElementById('musicTitle').textContent = song.title;
+        document.getElementById('musicAuthor').textContent = song.artist;
+        document.getElementById('musicImage').style.backgroundImage = `url('${song.image}')`;
+        document.getElementById('progress').style.width = '0%';
+    }
+
+    // ✅ NEW: Update repeat/shuffle icons
+    updateControlsDisplay() {
+        const repeatBtn = document.getElementById('repeatBtn');
+        const shuffleBtn = document.getElementById('shuffleBtn');
+        
+        if (repeatBtn) {
+            repeatBtn.textContent = this.repeatMode === 'repeat-one' ? '🔂' : 
+                                   this.repeatMode === 'repeat-all' ? '🔁' : '🔀';
+        }
+        if (shuffleBtn) {
+            shuffleBtn.textContent = this.shuffle ? '🔀✅' : '🔀';
+        }
+    }
+
+    togglePlay() {
+        const playBtn = document.getElementById('playPauseBtn');
+        
+        if (this.isPlaying) {
+            // PAUSE
+            this.pauseAllAudio();
+            playBtn.textContent = '▶';
+            this.isPlaying = false;
+        } else {
+            // PLAY with AUTOPLAY setup
+            this.playCurrentSong(true); // true = enable autoplay
+            playBtn.textContent = '⏸';
+            this.isPlaying = true;
+        }
+    }
+
+    // 🎵 SUPERCHARGED: Auto-next + Crossfade + Repeat + Shuffle
+    playCurrentSong(enableAutoplay = true) {
+        this.pauseAllAudio();
+        const currentAudio = document.getElementById(this.audioPlayers[this.currentSong - 1]);
+        
+        // Smooth crossfade volume
+        currentAudio.volume = 0;
+        currentAudio.currentTime = 0;
+        
+        // Fade in effect
+        const fadeIn = setInterval(() => {
+            currentAudio.volume = Math.min(currentAudio.volume + 0.08, 0.6);
+            if (currentAudio.volume >= 0.6) clearInterval(fadeIn);
+        }, 50);
+
+        currentAudio.play().catch(e => console.log('Audio play failed:', e));
+        this.startProgressAnimation();
+
+        // 🚀 AUTOPLAY MAGIC: Auto-next song when finished!
+        if (enableAutoplay) {
+            currentAudio.onended = () => {
+                console.log(`🎵 Song ${this.currentSong} ended! Auto-next...`);
+                setTimeout(() => this.autoNextSong(), 300); // Smooth transition
+            };
+        }
+    }
+
+    // 🎯 CORE: Smart auto-next with repeat/shuffle
+    autoNextSong() {
+        if (this.repeatMode === 'repeat-one') {
+            // Repeat same song
+            this.playCurrentSong(true);
+            return;
+        }
+        
+        if (this.shuffle) {
+            // Shuffle: Pick random song (not current)
+            const availableSongs = this.playlist.filter(s => s !== this.currentSong);
+            this.currentSong = availableSongs[Math.floor(Math.random() * availableSongs.length)];
+        } else {
+            // Normal: Next song or loop to 1
+            this.currentSong = this.currentSong === 5 ? 1 : this.currentSong + 1;
+        }
+        
+        this.updateSongDisplay();
+        this.playCurrentSong(true); // Auto-play next
+    }
+
+    nextSong() {
+        if (this.shuffle) {
+            // Shuffle next
+            const availableSongs = [1,2,3,4,5].filter(s => s !== this.currentSong);
+            this.currentSong = availableSongs[Math.floor(Math.random() * availableSongs.length)];
+        } else {
+            this.currentSong = this.currentSong === 5 ? 1 : this.currentSong + 1;
+        }
+        this.updateSongDisplay();
+        if (this.isPlaying) this.playCurrentSong(true);
+    }
+
+    prevSong() {
+        this.currentSong = this.currentSong === 1 ? 5 : this.currentSong - 1;
+        this.updateSongDisplay();
+        if (this.isPlaying) this.playCurrentSong(true);
+    }
+
+    // 🎛️ REPEAT CONTROLS
+    toggleRepeat() {
+        switch (this.repeatMode) {
+            case 'off': this.repeatMode = 'repeat-all'; break;
+            case 'repeat-all': this.repeatMode = 'repeat-one'; break;
+            case 'repeat-one': this.repeatMode = 'off'; break;
+        }
+        this.updateControlsDisplay();
+    }
+
+    // 🎛️ SHUFFLE CONTROL
+    toggleShuffle() {
+        this.shuffle = !this.shuffle;
+        this.updateControlsDisplay();
+    }
+
+    pauseAllAudio() {
+        this.audioPlayers.forEach(id => {
+            const audio = document.getElementById(id);
+            audio.pause();
+            audio.onended = null; // Clean up listeners
+            audio.volume = 0.6;
+        });
+    }
+
+    startProgressAnimation() {
+        const progress = document.getElementById('progress');
+        let width = 0;
+        const interval = setInterval(() => {
+            width += 0.3;
+            progress.style.width = width + '%';
+            if (width >= 100) clearInterval(interval);
+        }, 300);
+    }
+}
+
+window.addEventListener('load', () => new MonthsaryGame());
+</script>
+
+</body>
+</html>
